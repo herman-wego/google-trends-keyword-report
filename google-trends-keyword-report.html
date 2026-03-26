@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Trends Keyword Report — Airline + City + Flights 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0f1117;
+    color: #e1e1e6;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1040 0%, #2d1b69 40%, #1a3a5c 100%);
+    border-bottom: 1px solid #2a2d3e;
+    padding: 48px 0 40px;
+    margin-bottom: 32px;
+  }
+  .header .container { padding-top: 0; padding-bottom: 0; }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #818cf8, #6dd5ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: #a0a0b0;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  .date-badge {
+    display: inline-block;
+    background: rgba(129, 140, 248, 0.15);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+    color: #a5b4fc;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .focus-badge {
+    display: inline-block;
+    background: rgba(251, 146, 60, 0.15);
+    border: 1px solid rgba(251, 146, 60, 0.3);
+    color: #fb923c;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  /* News Context Box */
+  .news-context {
+    background: linear-gradient(135deg, #1a1d2e, #1e2235);
+    border: 1px solid #2a2d3e;
+    border-left: 4px solid #f59e0b;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .news-context h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f59e0b;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .news-item {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-item strong { color: #fbbf24; }
+  .news-item span { color: #9ca3af; }
+
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: #1a1d2e;
+    border: 1px solid #2a2d3e;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #a78bfa, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-number.urgent { background: linear-gradient(135deg, #ef4444, #f97316); -webkit-background-clip: text; }
+  .stat-number.news { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; }
+  .stat-label { font-size: 13px; color: #71717a; font-weight: 500; margin-top: 4px; }
+
+  /* Executive Summary */
+  .exec-summary {
+    background: linear-gradient(135deg, #1e1b4b, #1e293b);
+    border: 1px solid #3730a3;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 28px;
+    font-size: 15px;
+    color: #c4b5fd;
+    line-height: 1.7;
+  }
+  .exec-summary h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #a78bfa;
+    margin-bottom: 12px;
+  }
+
+  /* Alerts */
+  .alert {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-left: 4px solid #ef4444;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .alert.amber {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.25);
+    border-left-color: #f59e0b;
+  }
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .alert-title { font-weight: 700; font-size: 14px; color: #fca5a5; }
+  .alert.amber .alert-title { color: #fcd34d; }
+  .alert-desc { font-size: 13px; color: #a1a1aa; margin-top: 2px; }
+  .alerts-section { margin-bottom: 32px; }
+  .alerts-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ef4444;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Section headers */
+  .section-header {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #2a2d3e;
+    background: linear-gradient(135deg, #a78bfa, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Keyword Cards */
+  .keyword-card {
+    background: #1a1d2e;
+    border: 1px solid #2a2d3e;
+    border-radius: 12px;
+    padding: 20px 20px 20px 24px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    border-left: 4px solid #6b7280;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .keyword-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .keyword-card.priority-write-now { border-left-color: #ef4444; }
+  .keyword-card.priority-audit { border-left-color: #ef4444; }
+  .keyword-card.priority-high { border-left-color: #f59e0b; }
+  .keyword-card.priority-medium { border-left-color: #6b7280; }
+
+  .rank {
+    font-size: 28px;
+    font-weight: 800;
+    color: #3f3f46;
+    min-width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 4px;
+  }
+  .keyword-card.priority-write-now .rank { color: #ef4444; }
+  .keyword-card.priority-high .rank { color: #f59e0b; }
+
+  .keyword-content { flex: 1; min-width: 0; }
+  .keyword-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: #f4f4f5;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .keyword-note {
+    font-size: 13px;
+    color: #a1a1aa;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .keyword-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-breakout { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+  .badge-high-growth { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge-moderate { background: rgba(34, 197, 94, 0.15); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.2); }
+  .badge-steady { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.2); }
+
+  /* Content type tags */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .tag-crisis { background: rgba(239, 68, 68, 0.12); color: #fca5a5; }
+  .tag-flights { background: rgba(34, 197, 94, 0.12); color: #86efac; }
+  .tag-news { background: rgba(251, 146, 60, 0.12); color: #fdba74; }
+  .tag-airline { background: rgba(56, 189, 248, 0.12); color: #7dd3fc; }
+  .tag-destination { background: rgba(99, 102, 241, 0.12); color: #a5b4fc; }
+  .tag-se-asia { background: rgba(168, 85, 247, 0.12); color: #d8b4fe; }
+  .tag-pakistan { background: rgba(236, 72, 153, 0.12); color: #f9a8d4; }
+
+  /* Priority labels */
+  .priority-label {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .priority-label.write-now { background: #ef4444; color: white; }
+  .priority-label.audit { background: #dc2626; color: white; }
+  .priority-label.high { background: #f59e0b; color: #1a1d2e; }
+  .priority-label.medium { background: #4b5563; color: #e5e7eb; }
+  .priority-label.evergreen { background: #374151; color: #9ca3af; }
+
+  .news-derived-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Clusters */
+  .clusters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .cluster-card {
+    background: #1a1d2e;
+    border: 1px solid #2a2d3e;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .cluster-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #a78bfa;
+    margin-bottom: 8px;
+  }
+  .cluster-desc {
+    font-size: 13px;
+    color: #a1a1aa;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .cluster-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .cluster-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(129, 140, 248, 0.1);
+    color: #c4b5fd;
+    border: 1px solid rgba(129, 140, 248, 0.15);
+  }
+  .cluster-tag .growth {
+    color: #fca5a5;
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid #2a2d3e;
+    margin-top: 40px;
+    color: #52525b;
+    font-size: 13px;
+  }
+  .footer a { color: #818cf8; text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .clusters-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 24px; }
+    .keyword-card { flex-direction: column; }
+    .rank { min-width: auto; }
+  }
+
+  /* Methodology note */
+  .methodology {
+    background: #1a1d2e;
+    border: 1px solid #2a2d3e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #71717a;
+  }
+  .methodology h3 { color: #a1a1aa; font-size: 14px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="container">
+    <h1>Google Trends Keyword Report</h1>
+    <p class="subtitle">Wego Blog — Rising "[airline] [city] flights 2026" queries you should write about</p>
+    <span class="date-badge">Research Date: 26 March 2026</span>
+    <span class="focus-badge">Focus: Airline + City Route Keywords</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- NEWS CONTEXT -->
+<div class="news-context">
+  <h2>&#x1F4F0; News Context Driving These Trends</h2>
+  <div class="news-item"><strong>US-Iran conflict &amp; Gulf airspace closures</strong> — <span>Massive flight disruptions across the Gulf since late February. Emirates, Qatar Airways, Etihad, and others suspended or rerouted flights. This is the #1 driver of the "airline flights 2026" search spike.</span></div>
+  <div class="news-item"><strong>Air India expands West Asia capacity to 42-48 flights</strong> — <span>Air India &amp; Air India Express operating special/additional flights to Jeddah, Dubai, Riyadh, Muscat, Sharjah. Driving massive search demand for "air india [city] flights 2026" keywords.</span></div>
+  <div class="news-item"><strong>Flyadeal &amp; Riyadh Air announce India routes</strong> — <span>Flyadeal launching Jeddah/Riyadh/Dammam to 5 Indian cities; Riyadh Air targeting Delhi, Mumbai, Bengaluru, Hyderabad, Chennai from summer 2026.</span></div>
+  <div class="news-item"><strong>Kuwait Airways &amp; PIA flights disrupted</strong> — <span>Both airlines significantly affected by Gulf airspace closures. Kuwait airport news and PIA flight status queries surging.</span></div>
+  <div class="news-item"><strong>SE Asian carriers rerouting around Middle East</strong> — <span>Singapore Airlines, Malaysia Airlines, Thai Airways all rerouting flights. SIA flights 2026 peaked at 100 on Google Trends.</span></div>
+</div>
+
+<!-- STATS ROW -->
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-number urgent">14</div>
+    <div class="stat-label">Write Now / Audit</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">42</div>
+    <div class="stat-label">Total Keywords Found</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">7</div>
+    <div class="stat-label">Thematic Clusters</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number news">38</div>
+    <div class="stat-label">News-Derived Discoveries</div>
+  </div>
+</div>
+
+<!-- EXEC SUMMARY -->
+<div class="exec-summary">
+  <h2>Executive Summary</h2>
+  <p>The "[airline] [city] flights 2026" keyword pattern is experiencing an unprecedented, crisis-driven breakout across Google Trends. Virtually every airline+Gulf city combination spiked 5,000%+ in early March 2026, driven by the US-Iran conflict and Gulf airspace closures. The India-Gulf corridor dominates — Air India, IndiGo, Emirates, and Qatar Airways route keywords show the strongest demand. This is a massive content opportunity: travelers are actively searching for specific airline+route status information, and Wego can capture this intent with targeted route-specific articles that include flight tracking links. The pattern extends beyond crisis: new route launches (Riyadh Air, Flyadeal) and SE Asian rerouting are generating sustained search interest that will outlast the crisis.</p>
+</div>
+
+<!-- METHODOLOGY NOTE -->
+<div class="methodology">
+  <h3>How to Read This Report</h3>
+  <p>All keywords follow the pattern "<strong>[airline name] [city name] flights 2026</strong>". Growth is measured from Google Trends data over the past 90 days (Dec 26, 2025 – Mar 26, 2026). Because most of these keywords had zero search volume before the crisis, nearly all qualify as "Breakout" (5,000%+). We've ranked them by <strong>relative peak search interest</strong> within comparison sets and cross-referenced against absolute volume indicators (regional interest scores). Keywords compared within the same Trends query share a relative scale; cross-set comparisons are approximate.</p>
+</div>
+
+<!-- TIME-SENSITIVE ALERTS -->
+<div class="alerts-section">
+  <h2>&#x26A0;&#xFE0F; Time-Sensitive Alerts</h2>
+
+  <div class="alert">
+    <span class="alert-icon">&#x1F534;</span>
+    <div>
+      <div class="alert-title">WRITE NOW: Emirates + Indian City Route Guides</div>
+      <div class="alert-desc">"emirates dubai flights 2026", "emirates mumbai/delhi/bangalore/hyderabad/chennai/kochi/kolkata flights 2026" — all at breakout levels. Travelers need to know: are these routes operating? What's the schedule? Create per-route status pages with Wego flight tracking links.</div>
+    </div>
+  </div>
+
+  <div class="alert">
+    <span class="alert-icon">&#x1F534;</span>
+    <div>
+      <div class="alert-title">WRITE NOW: Air India West Asia Route Guides</div>
+      <div class="alert-desc">"air india jeddah/dubai/riyadh/sharjah/muscat/doha/bahrain/dammam/kuwait/abu dhabi flights 2026" — the entire India-Gulf corridor is on fire. Air India is operating 24-48 special flights. High-intent, specific queries with massive volume.</div>
+    </div>
+  </div>
+
+  <div class="alert">
+    <span class="alert-icon">&#x1F534;</span>
+    <div>
+      <div class="alert-title">WRITE NOW: Qatar Airways + Gulf City Routes</div>
+      <div class="alert-desc">"qatar airways flights 2026", "qatar airways dubai flights 2026", "qatar airways delhi flights 2026" — Qatar Airways suspended then partially resumed flights. People searching for resumption status. Related breakout: "when will qatar airways resume flights".</div>
+    </div>
+  </div>
+
+  <div class="alert amber">
+    <span class="alert-icon">&#x1F7E0;</span>
+    <div>
+      <div class="alert-title">HIGH PRIORITY: PIA &amp; Kuwait Airways Route Status</div>
+      <div class="alert-desc">"pia flights 2026", "pia dubai flights 2026", "pia jeddah flights 2026", "kuwait airways flights 2026" — both airlines heavily disrupted. Pakistani diaspora in Gulf actively searching. Underserved content opportunity.</div>
+    </div>
+  </div>
+
+  <div class="alert amber">
+    <span class="alert-icon">&#x1F7E0;</span>
+    <div>
+      <div class="alert-title">EMERGING: Riyadh Air &amp; Flyadeal India Routes</div>
+      <div class="alert-desc">"riyadh air flights 2026", "flyadeal flights 2026" — both new Saudi carriers announcing India routes. Interest building. Pre-launch content opportunity before summer 2026 launch.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRIORITIZED KEYWORDS LIST -->
+<h2 class="section-header">Prioritized Keywords — Ranked by Editorial Priority</h2>
+
+<!-- #1 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">1</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">The single highest-volume keyword in this research. Peaked at maximum interest (100) on Mar 7. Emirates is the #1 airline brand in the region and Dubai is the hub — every traveler affected by Gulf closures searched this. Create a comprehensive "Emirates Dubai Flights 2026: Status, Schedule &amp; Updates" article with Wego flight tracking links.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #2 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">2</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">The generic brand query — highest overall search volume across all keywords. Peaked at 100 on Mar 7. Related breakout queries: "are emirates flights to dubai cancelled", "when will emirates resume flights", "are emirates flights operating". Wego should own this page with a live-updated Emirates flight status guide.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #3 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">3</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 98 on Mar 5-6. Air India is the primary carrier for the India-Gulf corridor with expanded 42-48 flight schedule. Millions of Indian expats in UAE drive this demand. Link to Wego's Air India flight tracking and Dubai flights page.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #4 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">4</div>
+  <div class="keyword-content">
+    <div class="keyword-text">qatar airways flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 67 relative to Emirates (massive absolute volume). Qatar Airways suspended flights to 12+ destinations including Japan, UK, Russia. Related breakout: "qatar airways cancelled flights", "when will qatar airways resume flights", "qatar airways flights affected today".</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #5 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">5</div>
+  <div class="keyword-content">
+    <div class="keyword-text">turkish airlines flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 93 (nearly as high as Emirates). Turkish Airlines is the key alternative for travelers rerouting around Gulf airspace. Related: "turkish airlines flight status" +300%. Major content opportunity — Turkey as a rerouting hub.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-airline">Airline Status</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #6 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">6</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india jeddah flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">The keyword that started this research. +1,450% breakout. Air India operating daily Mumbai and Chennai to Jeddah with Boeing 787 equipment. Appears as a breakout related query for Gulf Air, Oman Air, and Riyadh Air searches too — indicating cross-demand. Huge Hajj/Umrah corridor.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">+1,450% Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #7 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">7</div>
+  <div class="keyword-content">
+    <div class="keyword-text">qatar airways dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 within its comparison set on Mar 7. People searching for Qatar Airways connections through Dubai as an alternative routing. High-intent query for stranded travelers.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #8 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">8</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india sharjah flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its comparison set on Mar 7. Sharjah is the budget alternative to Dubai for Indian travelers. Air India Express serves this route. High demand from expat community.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #9 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">9</div>
+  <div class="keyword-content">
+    <div class="keyword-text">singapore airlines flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 on Mar 7 with strong pre-existing volume (20-40 baseline). SE Asian rerouting around Gulf drove a massive spike. Related: "zipair" Breakout, "cathay pacific airlines" +60%. Singapore Airlines is a key alternative for APAC travelers avoiding Gulf airspace.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-se-asia">SE Asia / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #10 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">10</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air arabia flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its set on Mar 5. Budget carrier heavily used by Indian/Pakistani workers in UAE. Related breakouts: "iran missiles", "air india jeddah flights 2026", "eid ul fitr 2026". Dual crisis + seasonal demand driver.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #11 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">11</div>
+  <div class="keyword-content">
+    <div class="keyword-text">kuwait airways flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its set on Mar 7. Kuwait airport heavily affected. Related: "kuwait airport news" +110%. Underserved audience — not many English-language resources covering Kuwait Airways disruptions specifically.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #12 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">12</div>
+  <div class="keyword-content">
+    <div class="keyword-text">egyptair flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its set on Mar 6, with steady pre-existing volume (14-31 baseline). Egypt is affected by regional tensions. Cairo is a key routing alternative. EgyptAir had 5x daily Dubai flights pre-crisis.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-airline">Airline Status</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #13 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">13</div>
+  <div class="keyword-content">
+    <div class="keyword-text">etihad flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 46 relative to Emirates. Related breakout: "etihad flights cancelled today", "israel iran war uae", "flight radar". Etihad has restarted flights but still operating reduced schedule.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #14 -->
+<div class="keyword-card priority-write-now">
+  <div class="rank">14</div>
+  <div class="keyword-content">
+    <div class="keyword-text">riyadh air flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its set on Mar 8. Saudi Arabia's new national airline launching routes to 5 Indian cities in summer 2026. Related: "oman air" +350%, "air india express" +190%. Pre-launch interest building — this keyword will grow as launch date nears.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-airline">New Airline</span>
+      <span class="priority-label write-now">Write Now</span>
+    </div>
+  </div>
+</div>
+
+<!-- #15 -->
+<div class="keyword-card priority-high">
+  <div class="rank">15</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india riyadh flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 49 relative to Air India Dubai. Two scheduled AI flights from Delhi to Riyadh plus four connecting Riyadh to Bengaluru and Kozhikode. Growing Indian expat population in Riyadh.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #16 -->
+<div class="keyword-card priority-high">
+  <div class="rank">16</div>
+  <div class="keyword-content">
+    <div class="keyword-text">pia flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Strong spike Mar 5-9. Related: "pia flight status" +140%, "pia flight schedule" +70%, "saudi airlines" +50%, "eid ul fitr 2026" +50%. Pakistani diaspora in Gulf is a massive underserved audience for Wego content.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-pakistan">Pakistan / Airline</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #17 -->
+<div class="keyword-card priority-high">
+  <div class="rank">17</div>
+  <div class="keyword-content">
+    <div class="keyword-text">pia dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 100 in its set on Mar 7. PIA's Dubai route is its most popular Gulf service. Combined with "pia jeddah flights 2026" (peaked 78), these represent the Pakistan-Gulf corridor opportunity.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-pakistan">Pakistan / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #18 -->
+<div class="keyword-card priority-high">
+  <div class="rank">18</div>
+  <div class="keyword-content">
+    <div class="keyword-text">indigo dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 43 relative to Air India Dubai. IndiGo is India's largest domestic carrier with growing Gulf presence. Budget travelers searching for IndiGo options to Dubai specifically.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #19 -->
+<div class="keyword-card priority-high">
+  <div class="rank">19</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india doha flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 78 in its set. Doha-India is a critical corridor with large Indian labor workforce in Qatar. Air India operating special flights on this route.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #20 -->
+<div class="keyword-card priority-high">
+  <div class="rank">20</div>
+  <div class="keyword-content">
+    <div class="keyword-text">indigo kuwait flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 80 in its set. Kuwait has a massive Indian population and IndiGo is a key carrier on this route. Crisis drove a sudden spike from zero to peak interest.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #21 -->
+<div class="keyword-card priority-high">
+  <div class="rank">21</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates bangalore flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 69 in its set. Bengaluru is India's tech capital with massive expat traffic to Gulf. Emirates Bangalore route is a premium corridor.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #22 -->
+<div class="keyword-card priority-high">
+  <div class="rank">22</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india bahrain flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 68 in its set on Mar 6. Bahrain has significant Indian population. Gulf Air repositioned from Bahrain — travelers seeking alternatives.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #23 -->
+<div class="keyword-card priority-high">
+  <div class="rank">23</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india abu dhabi flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 58 in its set. Abu Dhabi is Etihad's hub but Air India also serves this route. Travelers searching for alternatives during Etihad disruptions.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #24 -->
+<div class="keyword-card priority-high">
+  <div class="rank">24</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india kuwait flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 83 in its set on Mar 7. One of the strongest route-specific keywords. Kuwait-India corridor is underserved by English content.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #25 -->
+<div class="keyword-card priority-high">
+  <div class="rank">25</div>
+  <div class="keyword-content">
+    <div class="keyword-text">gulf air flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 31 relative to Emirates Dubai. Gulf Air repositioned aircraft from Bahrain. Related breakout: "gulf air special flights", "gulf air flight status" +300%. Bahrain travelers actively searching.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #26 -->
+<div class="keyword-card priority-high">
+  <div class="rank">26</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates mumbai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 30 in its set. Mumbai is the financial capital and busiest India-Dubai route. Combined with "emirates delhi flights 2026" (peak 31), represents the premium India-UAE corridor.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #27 -->
+<div class="keyword-card priority-high">
+  <div class="rank">27</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates chennai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 51 in its set on Mar 6. Chennai is a key South India gateway. Large Tamil diaspora in Gulf states drives this demand.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #28 -->
+<div class="keyword-card priority-high">
+  <div class="rank">28</div>
+  <div class="keyword-content">
+    <div class="keyword-text">etihad delhi flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 52 in its set on Mar 8. Etihad restarted flights but on reduced schedule — travelers checking Delhi-Abu Dhabi connectivity status.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #29 -->
+<div class="keyword-card priority-high">
+  <div class="rank">29</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates hyderabad flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 43 in its set. Hyderabad has a huge Gulf-connected population and is a Riyadh Air target city for summer 2026.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #30 -->
+<div class="keyword-card priority-high">
+  <div class="rank">30</div>
+  <div class="keyword-content">
+    <div class="keyword-text">oman air flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 18 relative to Emirates Dubai. Related: "oman air flight status" +300%. Oman is directly affected by Gulf tensions. "air india muscat flights resume" is a Breakout related query.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-crisis">Crisis / Airline</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #31 -->
+<div class="keyword-card priority-high">
+  <div class="rank">31</div>
+  <div class="keyword-content">
+    <div class="keyword-text">qatar airways delhi flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 34 in its set on Mar 7. Delhi is India's busiest international airport. Qatar Airways Kolkata service has resumed — Delhi travelers checking if their route is back too.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #32 -->
+<div class="keyword-card priority-high">
+  <div class="rank">32</div>
+  <div class="keyword-content">
+    <div class="keyword-text">flydubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 16 relative to Emirates. Lower volume but flydubai serves 40+ Indian cities — budget travelers checking status. Flydubai operates the most India routes of any UAE carrier by destination count.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-airline">Airline Status</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #33 -->
+<div class="keyword-card priority-high">
+  <div class="rank">33</div>
+  <div class="keyword-content">
+    <div class="keyword-text">pia jeddah flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 78 in its set on Mar 6. Jeddah-Pakistan is a massive Hajj/Umrah corridor. PIA's Jeddah service is critical for Pakistani pilgrims. High seasonal relevance with Hajj approaching.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-pakistan">Pakistan / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #34 -->
+<div class="keyword-card priority-high">
+  <div class="rank">34</div>
+  <div class="keyword-content">
+    <div class="keyword-text">emirates kochi flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 28 in its set on Mar 10 — notably later than other keywords, suggesting sustained demand. Kerala has the highest per-capita Gulf diaspora in India. Kochi is the gateway.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label high">High Priority</span>
+    </div>
+  </div>
+</div>
+
+<!-- #35 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">35</div>
+  <div class="keyword-content">
+    <div class="keyword-text">flyadeal flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 25 in its set on Mar 8. Saudi's LCC launching India routes from Jeddah, Riyadh, Dammam to 5 Indian cities. Interest building as launch approaches — evergreen opportunity to own the "flyadeal India flights" topic.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-airline">New Routes</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #36 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">36</div>
+  <div class="keyword-content">
+    <div class="keyword-text">malaysia airlines flights 2026</div>
+    <div class="keyword-note">Moderate steady volume with crisis spike. Related: "etihad" +130%, "cathay pacific flights" +50%, "first class malaysia airlines" +40%. Malaysia Airlines rerouting around Gulf — SE Asian travelers affected.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-high-growth">+130% related</span>
+      <span class="tag tag-se-asia">SE Asia / Airline</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #37 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">37</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india muscat flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Smaller volume but notable related breakout: "air india muscat flights resume" — people specifically waiting for resumption. Oman-India corridor is active.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout related</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #38 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">38</div>
+  <div class="keyword-content">
+    <div class="keyword-text">air india dammam flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 17 in its set. Dammam is Saudi's Eastern Province hub — smaller but distinct search audience. Flyadeal also launching Dammam-India routes.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #39 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">39</div>
+  <div class="keyword-content">
+    <div class="keyword-text">indigo riyadh flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 13 in its set. IndiGo expanding Gulf presence — budget-conscious travelers searching for IndiGo as an alternative on the Riyadh corridor.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-breakout">Breakout</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #40 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">40</div>
+  <div class="keyword-content">
+    <div class="keyword-text">saudia flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Peaked at 9 relative to Emirates. Lower volume but related queries are gold: "eid ul fitr 2026" +4,700%, "saudia airlines" +70%. Seasonal Eid travel + crisis = compound demand.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-high-growth">+4,700% Eid related</span>
+      <span class="tag tag-airline">Airline Status</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #41 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">41</div>
+  <div class="keyword-content">
+    <div class="keyword-text">spicejet dubai flights 2026 <span class="news-derived-badge">News-derived</span></div>
+    <div class="keyword-note">Small but present spike (peaked 7-8). SpiceJet operates Dubai services from multiple Indian cities. Lower-tier keyword but can be included in umbrella "India-Dubai flights" content.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-moderate">Growing</span>
+      <span class="tag tag-flights">Flights / Route</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- #42 -->
+<div class="keyword-card priority-medium">
+  <div class="rank">42</div>
+  <div class="keyword-content">
+    <div class="keyword-text">cebu pacific flights 2026</div>
+    <div class="keyword-note">Moderate steady volume with spike. Related breakouts: "air asia flights", "cebu pacific cancelled flights today", "air asia philippines". Filipino diaspora in Gulf is a notable audience segment for Wego.</div>
+    <div class="keyword-meta">
+      <span class="badge badge-moderate">Growing</span>
+      <span class="tag tag-se-asia">SE Asia / Airline</span>
+      <span class="priority-label medium">Medium</span>
+    </div>
+  </div>
+</div>
+
+<!-- THEMATIC CLUSTERS -->
+<h2 class="section-header" style="margin-top: 40px;">Thematic Clusters</h2>
+
+<div class="clusters-grid">
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x2708;&#xFE0F; Air India West Asia Route Network</div>
+    <div class="cluster-desc">The single biggest cluster. Air India + Air India Express operating 24-48 daily flights to Gulf cities. Every route keyword is at Breakout. Write a comprehensive "Air India West Asia Flights 2026" hub page covering all routes, with Wego flight tracking links for each.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">air india dubai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india jeddah flights 2026 <span class="growth">+1,450%</span></span>
+      <span class="cluster-tag">air india riyadh flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india sharjah flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india doha flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india muscat flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india bahrain flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india kuwait flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india abu dhabi flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air india dammam flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F6EB; Emirates Route-Specific Queries</div>
+    <div class="cluster-desc">Emirates is the most-searched airline brand. Travelers searching for specific city pair status — perfect for route-specific landing pages that link to Wego's Emirates flight tracking tool.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">emirates dubai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates mumbai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates delhi flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates bangalore flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates chennai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates hyderabad flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates kochi flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">emirates london flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F534; Gulf Airline Crisis Status Queries</div>
+    <div class="cluster-desc">Generic "[airline] flights 2026" queries from travelers checking if their airline is operating at all. These are high-volume, brand-level queries. Each deserves a dedicated, live-updated status article.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">emirates flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">qatar airways flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">etihad flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">air arabia flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">gulf air flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">flydubai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">saudia flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">oman air flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F1F5;&#x1F1F0; Pakistan-Gulf Corridor</div>
+    <div class="cluster-desc">Underserved by English-language content. PIA is heavily disrupted and Pakistani workers in Gulf need route status info. Hajj season approaching adds urgency for Jeddah routes.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">pia flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">pia dubai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">pia jeddah flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F1F8;&#x1F1EC; SE Asian Airlines Rerouting</div>
+    <div class="cluster-desc">Singapore Airlines, Malaysia Airlines, Thai Airways all rerouting around Gulf airspace. These airlines serve Wego's APAC audience. SIA had the highest baseline volume of any keyword pre-crisis.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">singapore airlines flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">malaysia airlines flights 2026 <span class="growth">+130%</span></span>
+      <span class="cluster-tag">cebu pacific flights 2026 <span class="growth">Growing</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F195; New Saudi Carrier Launches</div>
+    <div class="cluster-desc">Riyadh Air and Flyadeal both announcing India routes for 2026. This is pre-launch interest — will grow as launch dates near. Early content here establishes Wego as the go-to source.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">riyadh air flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">flyadeal flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+
+  <div class="cluster-card">
+    <div class="cluster-title">&#x1F4C5; IndiGo Gulf Expansion</div>
+    <div class="cluster-desc">India's largest airline expanding Gulf network. Budget-conscious Indian workers searching for IndiGo options across multiple Gulf cities. Can be grouped into one "IndiGo Gulf Flights 2026" article.</div>
+    <div class="cluster-tags">
+      <span class="cluster-tag">indigo dubai flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">indigo jeddah flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">indigo kuwait flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">indigo riyadh flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">indigo abu dhabi flights 2026 <span class="growth">Breakout</span></span>
+      <span class="cluster-tag">indigo doha flights 2026 <span class="growth">Breakout</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Data Source: <a href="https://trends.google.com" target="_blank">Google Trends</a> &middot; Scope: Worldwide, Past 90 days (Dec 26, 2025 – Mar 26, 2026)</p>
+  <p style="margin-top: 8px;">Keyword pattern researched: <strong>[airline name] [city name] flights 2026</strong></p>
+  <p style="margin-top: 8px;">Prepared for <strong>blog.wego.com</strong> editorial team &middot; 26 March 2026</p>
+</div>
+
+</div>
+</body>
+</html>
